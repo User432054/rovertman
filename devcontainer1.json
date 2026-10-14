@@ -1,0 +1,15 @@
+{
+  "name": "Google Chrome DevContainer",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "Google Chrome Web UI",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postStartCommand": "docker volume create chrome-config >/dev/null; docker rm -f chrome 2>/dev/null || true; docker run -d --name=chrome --restart=always -p 8080:3000 -v chrome-config:/config -e AUTO_LOGIN=true -e SUBFOLDER=/ -e CHROME_CLI=\"--disable-dev-shm-usage --disable-gpu --no-sandbox\" --security-opt seccomp=unconfined --shm-size=4gb ghcr.io/linuxserver/chrome:latest"
+}
